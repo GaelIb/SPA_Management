@@ -15,17 +15,17 @@ int main() {
     cin >> duration;
     cout << "Enter base price: $";
     cin >> price;
-    cin.ignore();
+    cin.ignore(); // Limpiar buffer
     cout << "Enter appointment time (e.g., 3:00 PM): ";
     getline(cin, time);
     cout << "Is the client returning? (y/n): ";
     cin >> clientTypeChar;
     isReturningClient = (clientTypeChar == 'y' || clientTypeChar == 'Y');
 
-
     Service* booking = new TherapeuticMassage(time, isReturningClient, duration, price);
+
     cout << "\n========================================\n";
-    booking->displaySummary();
+    cout << booking->getSummary();
     cout << "========================================\n";
 
     delete booking;
