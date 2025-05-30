@@ -1,8 +1,9 @@
 #include "TherapeuticMassage.h"
-#include <iostream>
+#include <sstream>
 #include <iomanip>
 using namespace std;
 
+// Constructores
 TherapeuticMassage::TherapeuticMassage()
     : Service("Personalized therapeutic massage", 0, 0.0), appointmentTime(""), isReturningClient(false) {}
 
@@ -10,11 +11,13 @@ TherapeuticMassage::TherapeuticMassage(const string& time, bool returning, int d
     : Service("Personalized therapeutic massage", duration, basePrice),
       appointmentTime(time), isReturningClient(returning) {}
 
+// Getters & Setters
 string TherapeuticMassage::getAppointmentTime() const { return appointmentTime; }
 bool TherapeuticMassage::getIsReturningClient() const { return isReturningClient; }
 void TherapeuticMassage::setAppointmentTime(const string& time) { appointmentTime = time; }
 void TherapeuticMassage::setReturningClient(bool returning) { isReturningClient = returning; }
 
+// Método override (sin parámetros)
 double TherapeuticMassage::calculateFinalPrice() const {
     double finalPrice = basePrice;
     if (duration > 60) {
@@ -23,6 +26,7 @@ double TherapeuticMassage::calculateFinalPrice() const {
     return finalPrice;
 }
 
+// Overload/override: con parámetro de cliente recurrente
 double TherapeuticMassage::calculateFinalPrice(bool isReturningClientParam) const {
     double finalPrice = basePrice;
     if (duration > 60) {
@@ -34,23 +38,25 @@ double TherapeuticMassage::calculateFinalPrice(bool isReturningClientParam) cons
     return finalPrice;
 }
 
-void TherapeuticMassage::displaySummary() const {
-    cout << "Service: " << serviceName << endl;
-    cout << "Duration: " << duration << " minutes" << endl;
-    cout << "Base Price: $" << fixed << setprecision(0) << basePrice << endl;
-    cout << "Time: " << appointmentTime << endl;
+// Ahora este método SOLO arma el string, NO imprime
+string TherapeuticMassage::getSummary() const {
+    stringstream ss;
+    ss << "Service: " << serviceName << endl;
+    ss << "Duration: " << duration << " minutes" << endl;
+    ss << "Base Price: $" << fixed << setprecision(0) << basePrice << endl;
+    ss << "Time: " << appointmentTime << endl;
     if (isReturningClient)
-        cout << "Client Type: Returning Client" << endl;
-    cout << endl;
+        ss << "Client Type: Returning Client" << endl;
+    ss << endl;
 
-    bool surchargeApplied = (duration > 60);
-    bool discountApplied = isReturningClient;
-    if (surchargeApplied)
-        cout << "Note: Duration exceeds 60 minutes. Surcharge applied: $200" << endl;
-    if (discountApplied)
-        cout << "Note: Returning client discount applied: 10%" << endl;
+    if (duration > 60)
+        ss << "Note: Duration exceeds 60 minutes. Surcharge applied: $200" << endl;
+    if (isReturningClient)
+        ss << "Note: Returning client discount applied: 10%" << endl;
 
-    cout << "Final Price: $" << fixed << setprecision(0)
-         << calculateFinalPrice(isReturningClient) << endl;
-    cout << "Booking Confirmed" << endl;
+    ss << "Final Price: $" << fixed << setprecision(0)
+       << calculateFinalPrice(isReturningClient) << endl;
+    ss << "Booking Confirmed" << endl;
+
+    return ss.str();
 }
