@@ -21,7 +21,7 @@ public:
     void setReturningClient(bool returning);
 
     // Métodos override
-    void displaySummary() const override;
+    string getSummary() const override;
     double calculateFinalPrice() const override;
 
     // Overload
